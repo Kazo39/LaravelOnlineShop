@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\OrderMail;
+
+use App\Events\newOrderAddedEvent;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\OrderItem;
+use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 
@@ -46,18 +47,19 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
 
-        $orders = Session::get('order');
+        $order = Session::get('order');
+        $user = auth()->user();
         DB::beginTransaction();
 
-        $order = Order::query()->create([
-            'user_id' => auth()->user()->id,
+        $new_order = Order::query()->create([
+            'user_id' => $user->id,
             'total_price' => Session::get('total_price')
         ]);
-        if(!$order){
+        if(!$new_order){
             DB::rollBack();
             return redirect()->route('order.show_current', ['message' => 'Error occurred, please try again.']);
         }
-        foreach ($orders as $item){
+        foreach ($order as $item){
             $additions = '';
             foreach ($item[1]['additions'] as $addition){
                 $additions = $additions.$addition.', ';
@@ -72,7 +74,7 @@ class OrderController extends Controller
                 'path' => $item['path'],
                 'amount' => $item[0]['amount'],
                 'additions' => $additions,
-                'order_id' => $order->id
+                'order_id' => $new_order->id
             ]);
             if(!$item){
                 DB::rollBack();
@@ -81,7 +83,7 @@ class OrderController extends Controller
         }
 
         DB::commit();
-        Mail::to(auth()->user()->email)->queue(new OrderMail(auth()->user(), $orders, $order->total_price));
+        event(new newOrderAddedEvent($user, $order, $new_order->total_price));
         return redirect()->route('order.show_current', ['message' => 'Your order is made successfully!']);
     }
 

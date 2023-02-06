@@ -14,7 +14,7 @@ class OrderMail extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $orders;
+    public $order;
     public $total_price;
 
     /**
@@ -22,10 +22,10 @@ class OrderMail extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $orders, $total_price)
+    public function __construct($user, $order, $total_price)
     {
         $this->user = $user;
-        $this->orders = $orders;
+        $this->order = $order;
         $this->total_price = $total_price;
     }
 

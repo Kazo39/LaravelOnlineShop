@@ -5,10 +5,11 @@ Dear, {{$user->name}}
 
     Your order is successfully made.
     Order:
-    @foreach($orders as $order)
-                Name: {{$order['name']}}
-                Price: {{$order['price']}}€
-                Amount: {{$order[0]['amount']}}
+    @foreach($order as $item)
+                Type: {{$item['type']}}
+                Name: {{$item['name']}}
+                Price: {{$item['price']}}€
+                Amount: {{$item[0]['amount']}}
 
     @endforeach
     Total price is {{$total_price}}€
