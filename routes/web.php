@@ -44,7 +44,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/order/show_current', [OrderController::class, 'showCurrentOrder'])->name('order.show_current');
 
 
-
     Route::resource('/food', FoodController::class);
     Route::resource('/drink', DrinkController::class);
     Route::resource('/snack', SnackController::class);
