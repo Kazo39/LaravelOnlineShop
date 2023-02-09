@@ -6,19 +6,19 @@ use App\Http\Requests\StoreAdditionRequest;
 use App\Models\Food;
 use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+
 
 class FoodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Food::class, 'food');
+    }
+
+
     public function index(Request $request)
     {
         $alert = false;
@@ -35,9 +35,7 @@ class FoodController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('food.index');
-        }
+
         return view('food.create');
     }
 
@@ -49,9 +47,6 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('food.index');
-        }
 
         if($path = Storage::put('public/Images', $request->meal_photo)){
             $path = substr($path,7,strlen($path));

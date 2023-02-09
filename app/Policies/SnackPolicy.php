@@ -18,7 +18,7 @@ class SnackPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -30,7 +30,7 @@ class SnackPolicy
      */
     public function view(User $user, Snack $snack)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -41,7 +41,7 @@ class SnackPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class SnackPolicy
      */
     public function update(User $user, Snack $snack)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -65,7 +65,7 @@ class SnackPolicy
      */
     public function delete(User $user, Snack $snack)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -77,7 +77,7 @@ class SnackPolicy
      */
     public function restore(User $user, Snack $snack)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -89,6 +89,14 @@ class SnackPolicy
      */
     public function forceDelete(User $user, Snack $snack)
     {
-        //
+        return false;
+    }
+
+    /**
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addAddition(User $user){
+        return $user->is_admin;
     }
 }

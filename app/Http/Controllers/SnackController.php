@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Storage;
 
 class SnackController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Snack::class, 'snack');
+    }
+
+
     public function index(Request $request)
     {
         $alert = false;
@@ -34,9 +35,6 @@ class SnackController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('snack.index');
-        }
         return view('snacks.create');
     }
 
@@ -48,9 +46,7 @@ class SnackController extends Controller
      */
     public function store(StoreSnackRequest $request)
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('snack.index');
-        }
+
 
         if($path = Storage::put('public/Images', $request->snack_photo)){
             $path = substr($path,7,strlen($path));
@@ -161,12 +157,9 @@ class SnackController extends Controller
     }
 
     public function addAddition(StoreAdditionRequest $request){
-        $snack = Snack::query()->where('id', $request->product_id)->get();
-        foreach ($snack as $s){
-            $snackM = $s;
-        }
+        $snack = Snack::query()->where('id', $request->product_id)->first();
 
-        $snackM->additions()->create([
+        $snack->additions()->create([
             'name' => $request->name
         ]);
 

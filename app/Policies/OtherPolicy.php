@@ -18,7 +18,7 @@ class OtherPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -30,7 +30,7 @@ class OtherPolicy
      */
     public function view(User $user, Other $other)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -41,7 +41,7 @@ class OtherPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class OtherPolicy
      */
     public function update(User $user, Other $other)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -65,7 +65,7 @@ class OtherPolicy
      */
     public function delete(User $user, Other $other)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -77,7 +77,7 @@ class OtherPolicy
      */
     public function restore(User $user, Other $other)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -89,6 +89,6 @@ class OtherPolicy
      */
     public function forceDelete(User $user, Other $other)
     {
-        //
+        return false;
     }
 }

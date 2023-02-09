@@ -18,7 +18,7 @@ class DrinkPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -30,7 +30,7 @@ class DrinkPolicy
      */
     public function view(User $user, Drink $drink)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -41,7 +41,7 @@ class DrinkPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class DrinkPolicy
      */
     public function update(User $user, Drink $drink)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -65,7 +65,7 @@ class DrinkPolicy
      */
     public function delete(User $user, Drink $drink)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -77,7 +77,7 @@ class DrinkPolicy
      */
     public function restore(User $user, Drink $drink)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -89,6 +89,6 @@ class DrinkPolicy
      */
     public function forceDelete(User $user, Drink $drink)
     {
-        //
+        return false;
     }
 }

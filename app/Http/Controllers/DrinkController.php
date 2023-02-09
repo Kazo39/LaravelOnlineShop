@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class DrinkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Drink::class, 'drink');
+    }
+
     public function index()
     {
         return view('drinks.index');
@@ -29,9 +29,7 @@ class DrinkController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('drink.index');
-        }
+
         return view('drinks.create');
     }
 
@@ -43,9 +41,7 @@ class DrinkController extends Controller
      */
     public function store(StoreDrinkRequest $request)
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('drink.index');
-        }
+
 
         if($path = Storage::put('public/Images', $request->drink_photo)){
             $path = substr($path,7,strlen($path));

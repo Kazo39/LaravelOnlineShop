@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\OrderItem;
-use App\Notifications\OrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -16,11 +15,11 @@ use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Order::class, 'order');
+    }
+
     public function index()
     {
         $orders = Order::query()->where('user_id', auth()->user()->id)->orderByDesc('created_at')->get();
@@ -178,6 +177,7 @@ class OrderController extends Controller
         }
 
         $message = '';
+
         if($request->message){
             $message = $request->message;
         }
@@ -186,7 +186,8 @@ class OrderController extends Controller
         return view('order.show_current', [
             'order_items' => $orders,
             'total_price' => $total_price,
-            'message' => $message]);
+            'message' => $message
+        ]);
     }
 
 }

@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class OtherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Other::class, 'other');
+    }
+
     public function index()
     {
         return view('other.index');
@@ -27,9 +27,7 @@ class OtherController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('other.index');
-        }
+
         return view('other.create');
     }
 
@@ -41,9 +39,7 @@ class OtherController extends Controller
      */
     public function store(StoreOtherRequest $request)
     {
-        if(!auth()->user()->is_admin){
-            return redirect()->route('other.index');
-        }
+
 
         if($path = Storage::put('public/Images', $request->product_photo)){
             $path = substr($path,7,strlen($path));

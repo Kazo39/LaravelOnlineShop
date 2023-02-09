@@ -18,7 +18,7 @@ class FoodPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -30,7 +30,7 @@ class FoodPolicy
      */
     public function view(User $user, Food $food)
     {
-        //
+        return auth()->check();
     }
 
     /**
@@ -41,7 +41,7 @@ class FoodPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class FoodPolicy
      */
     public function update(User $user, Food $food)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -65,7 +65,7 @@ class FoodPolicy
      */
     public function delete(User $user, Food $food)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -77,7 +77,7 @@ class FoodPolicy
      */
     public function restore(User $user, Food $food)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -89,6 +89,14 @@ class FoodPolicy
      */
     public function forceDelete(User $user, Food $food)
     {
-        //
+        return false;
+    }
+
+    /**
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addAddition(User $user){
+        return $user->is_admin;
     }
 }

@@ -8,15 +8,15 @@ use App\Http\Requests\UpdateAdditionRequest;
 use App\Models\Food;
 use App\Models\Snack;
 use Illuminate\Http\Request;
-use MongoDB\Driver\Session;
+
 
 class AdditionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     //* @return \Illuminate\Http\Response
-     */
+
+    public function __construct(){
+        $this->authorizeResource(Addition::class, 'addition');
+    }
+
     public function index(Request $request)
     {
         $additions = [];
