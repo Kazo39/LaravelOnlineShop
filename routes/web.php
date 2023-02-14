@@ -6,6 +6,7 @@ use App\Http\Controllers\DrinkController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OtherController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SnackController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,7 +43,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/food/add/product/additions/{food}', [FoodController::class, 'addProductWithAdditionsToOrder'])->name('food.add.with.additions');
     Route::post('/snack/add/product/additions/{snack}', [SnackController::class, 'addProductWithAdditionsToOrder'])->name('snack.add.with.additions');
     Route::get('/order/show_current', [OrderController::class, 'showCurrentOrder'])->name('order.show_current');
-
+    Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::post('/settings/change-password', [SettingsController::class, 'update'])->name('settings.update');
 
     Route::resource('/food', FoodController::class);
     Route::resource('/drink', DrinkController::class);

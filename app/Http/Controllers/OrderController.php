@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::query()->where('user_id', auth()->user()->id)->orderByDesc('created_at')->get();
+        $orders = Order::query()->where('user_id', auth()->user()->id)->orderByDesc('created_at')->paginate(2);
 
         return view('order.index', ['orders' => $orders]);
     }

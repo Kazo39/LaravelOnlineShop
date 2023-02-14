@@ -48,6 +48,9 @@
                                     </div>
                                 </div>
                             @endforeach
+                            <div class="mt-2 row">
+                                {{ $orders->links() }}
+                            </div>
                         @else
                             <div class="row">
                                 <div class="col-8 offset-2 fs-5 text-center">
